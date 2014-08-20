@@ -717,11 +717,14 @@ sub fs_update {
 						while(<IN>) {
 							if(/ $d /) {
 								@tmp = split(' ', $_);
-								last;
+	                                                        my(  $read_cnt_, $read_sec_, $write_cnt_, $write_sec_ );
+                                                                (undef, undef, undef, $read_cnt_, undef, undef, $read_sec_, $write_cnt_, undef, undef, $write_sec_ ) = @tmp;
+                                                                $read_cnt += $read_cnt_; $write_cnt += $write_cnt_;
+                                                                $read_sec = $read_sec_ > $read_sec ? $read_sec_ : $read_sec;
+                                                                $write_sec = $write_sec_ > $write_sec ? $write_sec_ : $write_sec;
 							}
 						}
 						close(IN);
-						(undef, undef, undef, $read_cnt, undef, undef, $read_sec, $write_cnt, undef, undef, $write_sec) = @tmp;
 					} else {
 						my $io;
 						open(IN, "/proc/stat");
